@@ -67,6 +67,9 @@ function Header() {
             className={`bg-gray-600 flex items-center px-0.5 rounded-full h-6 w-12 cursor-pointer flex-shrink-0 relative ${
               resolvedTheme === 'dark' ? 'justify-end' : 'justify-start'
             }`}
+            onClick={() =>
+              setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
+            }
           >
             <span className="absolute left-0">🌜</span>
             <motion.div
