@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Header from '../components/Header'
 import Sidebar from '../components/Sidebar'
 import { useRouter } from 'next/router'
+import Feed from '../components/Feed'
 
 export default function Home() {
   const router = useRouter()
@@ -25,9 +26,9 @@ export default function Home() {
       <Header />
 
       <main className="flex justify-center gap-x-5 px-4 sm:px-12">
-        <div className="flex flex-col md:flex-row gap-x-5">
+        <div className="flex flex-col md:flex-row gap-5">
           <Sidebar />
-          {/* Feed */}
+          <Feed />
         </div>
         {/* Widgets */}
       </main>
