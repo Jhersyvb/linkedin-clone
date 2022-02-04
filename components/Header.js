@@ -8,13 +8,29 @@ import GroupIcon from '@mui/icons-material/Group'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import NotificationsIcon from '@mui/icons-material/Notifications'
 import { Avatar } from '@mui/material'
+import { useEffect, useState } from 'react'
+import { useTheme } from 'next-themes'
 
 function Header() {
+  const [mounted, setMounted] = useState(false)
+  const { theme, resolvedTheme, setTheme } = useTheme()
+
+  // After mounting, we have access to the theme
+  useEffect(() => setMounted(true), [])
+
   return (
-    <header>
+    <header className="sticky top-0 z-40 bg-white dark:bg-[#1d2226] flex items-center justify-around py-1.5 px-3 focus-within:shadow-lg">
       {/* Left */}
       <div className="flex items-center space-x-2 w-full max-w-xs">
-        <Image src="https://rb.gy/bizvqj" width={45} height={45} alt="" />
+        {mounted && (
+          <>
+            {resolvedTheme === 'dark' ? (
+              <Image src="https://rb.gy/bizvqj" width={45} height={45} alt="" />
+            ) : (
+              <Image src="https://rb.gy/dpmd9s" width={55} height={55} alt="" />
+            )}
+          </>
+        )}
 
         <div className="flex items-center space-x-1 dark:md:bg-gray-700 py-2.5 px-4 w-full">
           <SearchRoundedIcon />
