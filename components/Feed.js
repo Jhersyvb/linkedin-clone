@@ -19,15 +19,25 @@ function Feed() {
 
       const responseData = await response.json()
       setRealtimePosts(responseData)
+      setHandlePost(false)
+      setUseSSRPosts(false)
     }
 
     fetchPosts()
+    console.log('handle post', handlePost)
   }, [handlePost])
+
+  console.log(realtimePosts)
 
   return (
     <div className="space-y-6 pb-24 max-w-lg">
       <Input />
-      {/* Posts */}
+      {realtimePosts.map((post, index) => (
+        <>
+          <img src={post.photoUrl} alt="" />
+          <div>{post.input}</div>
+        </>
+      ))}
     </div>
   )
 }
