@@ -8,8 +8,10 @@ import { AnimatePresence } from 'framer-motion'
 import Modal from '../components/Modal'
 import { useRecoilState } from 'recoil'
 import { modalState, modalTypeState } from '../atoms/modalAtom'
+import { connectToDatabase } from '../util/mongodb'
 
-export default function Home() {
+export default function Home({ posts }) {
+  console.log(posts)
   const [modalOpen, setModalOpen] = useRecoilState(modalState)
   const [modalType, setModalType] = useRecoilState(modalTypeState)
   const router = useRouter()
@@ -59,9 +61,28 @@ export async function getServerSideProps(context) {
     }
   }
 
+  // Gest posts on SSR
+  const { db } = await connectToDatabase()
+  const posts = await db
+    .collection('posts')
+    .find()
+    .sort({ timestamp: -1 })
+    .toArray()
+
+  // Get Google News API
+
   return {
     props: {
       session,
+      posts: posts.map(post => ({
+        _id: post._id.toString(),
+        input: post.input,
+        photoUrl: post.photoUrl,
+        username: post.username,
+        email: post.email,
+        userImg: post.userImg,
+        createdAt: post.createdAt,
+      })),
     },
   }
 }
