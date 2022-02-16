@@ -11,6 +11,7 @@ import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined
 import ThumbUpOffAltRoundedIcon from '@mui/icons-material/ThumbUpOffAltRounded'
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded'
 import ReplyRoundedIcon from '@mui/icons-material/ReplyRounded'
+import TimeAgo from 'timeago-react'
 
 function Post({ post, modalPost }) {
   const { data: session } = useSession()
@@ -40,7 +41,10 @@ function Post({ post, modalPost }) {
             {post.username}
           </h6>
           <p className="text-sm dark:text-white/75 opacity-80">{post.email}</p>
-          {/* Time ago stamp */}
+          <TimeAgo
+            datetime={post.createdAt}
+            className="text-xs dark:text-white/75 opacity-80"
+          />
         </div>
         {modalPost ? (
           <IconButton onClick={() => setModalOpen(false)}>
