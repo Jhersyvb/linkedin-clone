@@ -1,13 +1,19 @@
 import { useState } from 'react'
 import { useRecoilState } from 'recoil'
-import { modalState } from '../atoms/modalAtom'
+import { modalState, modalTypeState } from '../atoms/modalAtom'
+import { getPostState } from '../atoms/postAtom'
 import { Avatar, IconButton } from '@mui/material'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded'
 
 function Post({ post, modalPost }) {
   const [modalOpen, setModalOpen] = useRecoilState(modalState)
+  const [modalType, setModalType] = useRecoilState(modalTypeState)
+  const [postState, setPostState] = useRecoilState(getPostState)
   const [showInput, setShowInput] = useState(false)
+
+  const truncate = (string, n) =>
+    string?.length > n ? string.substr(0, n - 1) + '...see more' : string
 
   return (
     <div
@@ -37,8 +43,28 @@ function Post({ post, modalPost }) {
 
       {post.input && (
         <div className="px-2.5 break-all md:break-normal">
-          {modalPost || showInput ? <p>{post.input}</p> : <p>Truncate text</p>}
+          {modalPost || showInput ? (
+            <p onClick={() => setShowInput(false)}>{post.input}</p>
+          ) : (
+            <p onClick={() => setShowInput(true)}>
+              {truncate(post.input, 150)}
+            </p>
+          )}
         </div>
+      )}
+
+      {post.photoUrl && !modalPost && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={post.photoUrl}
+          alt=""
+          className="w-full cursor-pointer"
+          onClick={() => {
+            setModalOpen(true)
+            setModalType('gifYouUp')
+            setPostState(post)
+          }}
+        />
       )}
     </div>
   )
