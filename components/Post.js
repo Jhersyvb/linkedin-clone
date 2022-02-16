@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRecoilState } from 'recoil'
 import { useSession } from 'next-auth/react'
 import { modalState, modalTypeState } from '../atoms/modalAtom'
-import { getPostState } from '../atoms/postAtom'
+import { getPostState, handlePostState } from '../atoms/postAtom'
 import { Avatar, IconButton } from '@mui/material'
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded'
 import MoreHorizRoundedIcon from '@mui/icons-material/MoreHorizRounded'
@@ -20,12 +20,19 @@ function Post({ post, modalPost }) {
   const [postState, setPostState] = useRecoilState(getPostState)
   const [showInput, setShowInput] = useState(false)
   const [liked, setLiked] = useState(false)
+  const [handlePost, setHandlePost] = useRecoilState(handlePostState)
 
   const truncate = (string, n) =>
     string?.length > n ? string.substr(0, n - 1) + '...see more' : string
 
-  const deletePost = () => {
-    //
+  const deletePost = async () => {
+    const response = await fetch(`/api/posts/${post._id}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+    })
+
+    setHandlePost(true)
+    setModalOpen(false)
   }
 
   return (
